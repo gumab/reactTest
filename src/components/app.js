@@ -1,36 +1,25 @@
-import React from 'react';
-import Header from './header.js';
-import Footer from './footer.js';
-import Content from './content.js';
+import React, { Component } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Home from './home';
+import Posts from './posts';
+import About from './about';
+import NotMatch from './notMatch';
 
-class App extends React.Component {
-
-    constructor(){
-        super();
-        this.state = {
-            value : ""
-        };
-        this.changeValue = this.changeValue.bind(this);
-    }
- 
-    changeValue(event){
-        //alert(event.target.value);
-        this.setState({
-            value : event.target.value
-        });
-    }
-
-    render(){
+class App extends Component {
+    render() {
         return (
-            <div>
-            <Header style={{paddingBottom:"10px"}}
-            changeValue={this.changeValue}
-             title="Header 이름" />
-            <Content value={this.state.value} />
-            <Footer />
-            </div>
+            <BrowserRouter>
+                <div>
+                    App
+                    <Switch>
+                    <Route exact path="/" component={Home}/>
+                    <Route path="/posts" component={Posts}/>
+                    <Route path="/about" component={About}/>
+                    <Route component={NotMatch} />
+                    </Switch>
+                </div>
+            </BrowserRouter>
         );
     }
 }
- 
 export default App;

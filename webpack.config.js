@@ -10,7 +10,8 @@ module.exports = {
     devServer: {
         port: 3000,
         contentBase: __dirname + '/public/',
-        inline : true
+        inline : true,
+        historyApiFallback : true
     },
  
     module: {
