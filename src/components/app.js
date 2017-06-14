@@ -23,12 +23,11 @@ class App extends React.Component {
     render(){
         return (
             <div>
-            <Header
+            <Header style={{paddingBottom:"10px"}}
             changeValue={this.changeValue}
              title="Header 이름" />
             <Content value={this.state.value} />
             <Footer />
-            <h1>Hello React!</h1>
             </div>
         );
     }
