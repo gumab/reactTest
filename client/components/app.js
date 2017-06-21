@@ -5,6 +5,12 @@ import Header from './Header';
 import NotMatch from './NotMatch';
 import Admin from './Admin';
 
+import Promise from 'promise-polyfill'; 
+// To add to window
+if (!window.Promise) {
+  window.Promise = Promise;
+}
+
 class App extends Component {
     render() {
         return (
