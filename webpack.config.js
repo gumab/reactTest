@@ -1,6 +1,6 @@
 module.exports = {
     devtool : 'eval-source-map',
-    entry: './src/index.js',
+    entry: './client/index.js',
  
     output: {
         path: __dirname + '/public/',
@@ -10,8 +10,7 @@ module.exports = {
     devServer: {
         port: 3000,
         contentBase: __dirname + '/public/',
-        inline : true,
-        historyApiFallback : true
+        inline : true
     },
  
     module: {

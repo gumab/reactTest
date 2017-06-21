@@ -4,15 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --watch"
+    "start": "nodemon ./server/index.js --exec babel-node"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "path": "^0.12.7",
     "react": "^15.6.0",
     "react-dom": "^15.6.0",
     "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1"
+    "react-router-dom": "^4.1.1",
+    "dotenv": "^4.0.0",
+    "sequelize": "^4.1.0",
+    "tedious": "^2.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
