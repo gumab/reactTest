@@ -32,4 +32,27 @@ router.delete('/products/:id', (req,res)=>{
     });
 });
 
+router.get('/products/:id', (req,res)=>{
+    models.Products.findById(req.params.id).then( (product) => {
+        res.json({ product : product });
+    });
+});
+
+router.put('/products/:id' , (req,res)=>{
+
+    models.Products.update(
+        {
+            product_name : req.body.product_name,
+            price : req.body.price ,
+            sale_price : req.body.sale_price ,
+            description : req.body.description
+        }, 
+        { 
+            where : { id: req.params.id } 
+        }
+    ).then(function() {
+        res.json({ message : "success" });
+    });
+});
+
 export default router;

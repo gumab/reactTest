@@ -5,39 +5,39 @@ import getDate from '../../helper/getDate';
 
 class ProductList extends Component {
 
-    constructor(){
+    constructor() {
         super();
-        this.state = { 
-            products : []
+        this.state = {
+            products: []
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
         axios.get('/api/admin/products', {
-        }).then( (res) => {
+        }).then((res) => {
             this.setState({
-                products : res.data.products
+                products: res.data.products
             });
-        }).catch( (error) => {
+        }).catch((error) => {
             console.log(error);
         });
     }
 
-    removeProduct(key , event){
+    removeProduct(key, event) {
         event.preventDefault();
-        axios.delete( event.target.href)
-        .then( (res) => {
-            if(res.data.message==="success"){
-                alert('삭제되었습니다');
-                this.state.products.splice(key, 1);
-                this.setState({
-                    products : this.state.products
-                });
-            }
-        }).catch( (error) => {
-            console.log(error);
-        });
+        axios.delete(event.target.href)
+            .then((res) => {
+                if (res.data.message === "success") {
+                    alert('삭제되었습니다');
+                    this.state.products.splice(key, 1);
+                    this.setState({
+                        products: this.state.products
+                    });
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
     }
 
     render() {
@@ -53,19 +53,23 @@ class ProductList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.products.map( (product, key)=>{  
+                        {this.state.products.map((product, key) => {
                             let createdAt = getDate(product.createdAt);
                             return (
                                 <tr key={key}>
-                                    <td>{product.product_name}</td>
+                                    <td>
+                                        <Link to={`/admin/products/${product.id}`}>
+                                            {product.product_name}
+                                        </Link>
+                                    </td>
                                     <td>{product.price}</td>
                                     <td>
-                                        { createdAt.year } - 
-                                        { createdAt.month } - 
-                                        { createdAt.day }
+                                        {createdAt.year} -
+		{createdAt.month} -
+		{createdAt.day}
                                     </td>
                                     <td>
-                                        <a href={`/api/admin/products/${product.id}`} className="btn btn-danger" onClick={ this.removeProduct.bind(this, key ) }>삭제</a>
+                                        <a href={`/api/admin/products/${product.id}`} className="btn btn-danger" onClick={this.removeProduct.bind(this, key)}>삭제</a>
                                     </td>
                                 </tr>
                             )
