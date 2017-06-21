@@ -1,24 +1,28 @@
-import React, {Component} from 'react';
-import styles from '../stylesheets/header.css';
+import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
+import {Navbar, Nav, NavItem} from 'react-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap';
 
-class Header extends Component{
+class Header extends Component {
 
-    constructor(){
-        super();
-        //this를 사용하려면 super로 부모컴포넌트를 불러와야됨
-        this.state = {
-            title : "타이틀입니다.",
-            content : "내용입니다."
-        };
-    }
-
-    render(){
-        return(
-            <div>
-                <div className={styles.header}>{this.state.title}</div>
-                <div className={styles.content}>{this.state.content}</div>
-            </div>
-        )
+    render() {
+        return (
+            <Navbar inverse collapseOnSelect>
+                <Navbar.Header>
+                    <Navbar.Brand>
+                        <Link to="/">MyStore</Link>
+                    </Navbar.Brand>
+                    <Navbar.Toggle/>
+                </Navbar.Header>
+                <Navbar.Collapse>
+                    <Nav>
+                        <LinkContainer to="/admin/products">
+                            <NavItem>ADMIN</NavItem>
+                        </LinkContainer>
+                    </Nav>
+                </Navbar.Collapse>
+            </Navbar>
+        );
     }
 }
 
