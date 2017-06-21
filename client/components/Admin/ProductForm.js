@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class ProductWrite extends Component {
+class ProductForm extends Component {
     
     render() {
         return (
@@ -48,4 +48,4 @@ class ProductWrite extends Component {
     }
 }
 
-export default ProductWrite;
+export default ProductForm;

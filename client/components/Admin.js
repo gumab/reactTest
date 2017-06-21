@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Sidebar from '../components/Admin/Sidebar';
 import ProductList from '../components/Admin/ProductList';
-import ProductWrite from '../components/Admin/ProductForm';
+import ProductForm from '../components/Admin/ProductForm';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 class Admin extends Component {
