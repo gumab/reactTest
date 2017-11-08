@@ -1,0 +1,25 @@
+
+.ly_addr_wrap .ly_search_wrap {
+    display:none;
+}
+.ly_addr_wrap.ly_addr_list .ly_search_wrap {
+    display:block;
+}
+.ly_addr_wrap.ly_addr_list .addr_search_dsc{
+    display:none;
+}
+.ly_addr_wrap.ly_addr_list .ly_search_nodata .addr_search_dsc{
+    display:block;
+}
+.ly_addr_wrap.ly_addr_list .smilebox_wrap{
+    display:none;
+}
+.ly_addr_wrap.ly_addr_list .tit_addr {
+    display:none;
+}
+.result_area .tx_name{
+    display:none;
+}
+.result_area_v2 .tx_name{
+    display:block;
+}

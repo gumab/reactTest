@@ -1,29 +1,32 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Home from '../routes/Home';
-import Header from './Header';
-import NotMatch from './NotMatch';
-import Admin from './Admin';
+import React from 'react';
+import Address from './Address';
+import Map from './Map';
+import classNames from 'classnames';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import reducers from '../reducers';
+import ReduxThunk from 'redux-thunk';
+import Container from '../containers';
 
-import Promise from 'promise-polyfill'; 
-// To add to window
-if (!window.Promise) {
-  window.Promise = Promise;
-}
 
-class App extends Component {
+const store = createStore(
+    reducers,
+    applyMiddleware(ReduxThunk)
+);
+
+class App extends React.Component {
+
+    constructor() {
+        super();
+    }
+
     render() {
         return (
-            <Router>
-                <div>
-                    <Header />
-                    <Switch>
-                        <Route exact path="/" component={Home} />
-                        <Route path="/admin" component={Admin}/>
-                        <Route component={NotMatch}/>
-                    </Switch>
+            <Provider store={store}>
+                <div id="container">
+                    <Container />
                 </div>
-            </Router>
+            </Provider>
         );
     }
 }

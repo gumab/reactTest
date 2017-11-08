@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8">
+		<title>주소찾기</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link rel="dns-prefetch" href="//pics.ebay.co.kr" />
+		<link rel="dns-prefetch" href="//script.ebay.co.kr" />
+		<link rel="stylesheet" type="text/css" href="//mockupdev.ebay.co.kr/style/address/css/address.css">
+		<link rel="stylesheet" type="text/css" href="/css/style.css">
+	</head>
+	<body cz-shortcut-listen="true">
+		<div id="skipnavi">
+			<a href="#container">본문 바로가기</a>
+		</div>
+		<div id="wrap">
+		</div>
+		<script type="text/javascript" src="//mockupdev.ebay.co.kr/style/jscommon/jquery-1.12.0.min.js"></script>
+		<script type="text/javascript" src="//mockupdev.ebay.co.kr/style/address/js/address.js"></script>
+		<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=<%=apikey%>&libraries=services"></script>
+		<script type="text/javascript" src="/bundle.js"></script>
+		<input id="returnUrl" type="hidden" value="<%=returnUrl%>" />
+		<input id="closeUrl" type="hidden" value="<%=closeUrl%>" />
+		<input id="recentRegion" type="hidden" value="<%=recent%>" />
+		<input id="partnerKey" type="hidden" value="<%=partner%>" />
+		<input id="sboxType" type="hidden" value="<%=sboxType%>" />
+		<form name="return_form" method="POST" action ="<%=returnUrl%>">
+			<input name="addr1" type="hidden" />
+			<input name="addr2" type="hidden" />
+			<input name="lotaddr1" type="hidden" />
+			<input name="zipcode" type="hidden" />
+			<input name="sboxno" type="hidden" />
+		</form>
+	</body>
+</html>
