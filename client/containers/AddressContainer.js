@@ -7,10 +7,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    setConfirmAddress:(address) => dispatch(actions.setConfirmAddress(address)),
-    setSelectedAddressId:(id)=> dispatch(actions.setSelectedAddressId(id)),
-    setViewType:(viewType)=> dispatch(actions.setViewType(viewType)),
-    setFocus:(isFocus)=> dispatch(actions.setFocus(isFocus))
+    setConfirmAddress: (address) => dispatch(actions.setConfirmAddress(address)),
+    setSelectedAddressId: (id) => dispatch(actions.setSelectedAddressId(id)),
+    setViewType: (viewType) => dispatch(actions.setViewType(viewType)),
+    setFocus: (isFocus) => dispatch(actions.setFocus(isFocus)),
+    setSearchResult: (keyword, resultData) => dispatch(actions.setSearchResult(keyword, resultData))
 });
 
 const AddressContainer = connect(

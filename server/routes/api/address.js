@@ -17,6 +17,12 @@ router.get('/search', (req, res) => {
             msg: '주소를 상세히 입력해 주시기 바랍니다.'
         });
         return;
+    } else if (keyword.replace(/\s/gi, '').length < 2) {
+        res.json({
+            resCode: CONST.API_RESULT_CODE.INVALID_KEYWORD,
+            msg: '검색어는 최소2자리 이상 입력해야 합니다.'
+        });
+        return;
     }
 
     let url = `${HOSTS.SHIP_API}/api/Address/GetAddressSearch`;

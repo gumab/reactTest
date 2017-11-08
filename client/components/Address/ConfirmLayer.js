@@ -6,8 +6,8 @@ class ConfirmLayer extends Component {
         return (
 
             <div className="ly_search_wrap ly_delivery_wrap">
-                <a href="javascript:" className="tx_search tx_search_result"><span className="sp_addr ico_back"></span> 검색결과로 돌아가기</a>
-                <a href="javascript:" className="btn_lst">목록</a>
+                <a href="javascript:" className="tx_search tx_search_result" onClick={this.props.onClickListButton}><span className="sp_addr ico_back"></span> 검색결과로 돌아가기</a>
+                <a href="javascript:" className="btn_lst" onClick={this.props.onClickListButton}>목록</a>
                 <div className={classNames({
                     'result_area': true,
                     'result_area_v2': this.props.addressInfo.type === 'sbox'

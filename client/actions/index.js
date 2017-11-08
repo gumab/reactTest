@@ -34,3 +34,26 @@ export const setFocus = (isFocus) => {
         isFocus: isFocus
     };
 };
+
+export const setSearchResult = (keyword, resultData) => {
+    return {
+        type: types.SET_SEARCH_RESULT,
+        keyword: keyword,
+        resultData: resultData
+    };
+};
+
+export const setSboxList = (sboxList) => {
+    return {
+        type: types.SET_SBOX_LIST,
+        sboxList: sboxList
+    };
+};
+
+export const setMapArea = (center, bounds) => {
+    return {
+        type: types.SET_MAP_AREA,
+        center: center,
+        bounds: bounds
+    };
+};

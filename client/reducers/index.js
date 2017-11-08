@@ -2,7 +2,7 @@ import * as types from '../actions/ActionTypes';
 
 const defaultState = {
     value: '',
-    viewType: 'confirm',
+    viewType: 'initial',
     sboxType: 'enable',
     recent: '강남구',
     focusIn: false,
@@ -10,7 +10,17 @@ const defaultState = {
         type: 'sbox',
         title: '테스트지점'
     },
-    selectedAddressId: ''
+    selectedAddressId: '',
+    searchResult: [],
+    paging: undefined,
+    searchedKeyword: '',
+    partnerKey: 'G',
+    sboxList: [],
+    mapCenter: {
+        lat: 37.50011937730949,
+        lng: 127.03653931419586
+    },
+    mapBounds: {}
 };
 
 const reducer = (state = defaultState, action) => {
@@ -30,6 +40,21 @@ const reducer = (state = defaultState, action) => {
         case types.SET_FOCUS:
             return Object.assign({}, state, {
                 focusIn: action.isFocus
+            });
+        case types.SET_SEARCH_RESULT:
+            return Object.assign({}, state, {
+                searchedKeyword: action.keyword,
+                searchResult: action.resultData ? action.resultData.list : undefined,
+                paging: action.resultData ? action.resultData.page : undefined
+            });
+        case types.SET_SBOX_LIST:
+            return Object.assign({}, state, {
+                sboxList: action.sboxList
+            });
+        case types.SET_MAP_AREA:
+            return Object.assign({}, state, {
+                mapCenter: action.center,
+                mapBounds: action.bounds
             });
         default:
             return state;

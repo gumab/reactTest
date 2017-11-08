@@ -3,3 +3,6 @@ export const SET_SELECTED_ADDRESS_ID = 'SET_SELECTED_ADDRESS_ID';
 export const SET_VIEW_TYPE = 'SET_VIEW_TYPE';
 export const SET_MARKER = 'SET_MARKER';
 export const SET_FOCUS = 'SET_FOCUS';
+export const SET_SEARCH_RESULT = 'SET_SEARCH_RESULT';
+export const SET_SBOX_LIST = 'SET_SBOX_LIST';
+export const SET_MAP_AREA = 'SET_MAP_AREA';

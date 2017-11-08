@@ -25,22 +25,22 @@ class RecentList extends Component {
             <div className="ly_addr">
                 <ul className="lst_smilebox lst_smilebox_v2">
                     {
-                        this.props.sboxType!=='hide'?
+                        this.props.sboxType!=='hide' &&
                             this.state.sboxList.map((x, idx)=>{
                                 return(
-                                    <li key={'recent_sbox_'+idx} className={idx === (this.state.sboxList.length-1)?'last':null}>
-                                        <a href="javascript:">
+                                    <li key={'recent_sbox_'+idx} className={idx === (this.state.sboxList.length-1)&&'last'}>
+                                        <a href="javascript:" onClick={()=>{this.props.onClickRecentItem(x);}}>
                                             <span className="sp_addr ico_smilebox"></span>{x}<span className="sp_addr ico_arr"></span>
                                         </a>
                                     </li>
                                 );
-                            }):null
+                            })
                     }
                     {
                         this.state.recentList.map((x, idx)=>{
                             return(
                                 <li key={'recent_'+idx} className="type">
-                                    <a href="javascript:">
+                                    <a href="javascript:" onClick={()=>{this.props.onClickRecentItem(x);}}>
                                         <span className="sp_addr ico_search"></span>
                                         {x}
                                     </a>
