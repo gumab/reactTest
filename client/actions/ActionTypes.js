@@ -1,1 +1,5 @@
 export const SET_CONFIRM_ADDRESS = 'SET_CONFIRM_ADDRESS';
+export const SET_SELECTED_ADDRESS_ID = 'SET_SELECTED_ADDRESS_ID';
+export const SET_VIEW_TYPE = 'SET_VIEW_TYPE';
+export const SET_MARKER = 'SET_MARKER';
+export const SET_FOCUS = 'SET_FOCUS';

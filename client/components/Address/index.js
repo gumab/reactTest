@@ -3,6 +3,7 @@ import NoData from './NoData';
 import SmileBoxRecommend from './SmileBoxRecommend';
 import RecentList from './RecentList';
 import ConfirmLayer from './ConfirmLayer';
+import SearchResultList from './SearchResultList';
 
 class Address extends Component {
 
@@ -13,6 +14,8 @@ class Address extends Component {
         };
         this.onChangeText = this.onChangeText.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
+        this.onClickConfirmButton = this.onClickConfirmButton.bind(this);
+        this.onFocusSearchInput = this.onFocusSearchInput.bind(this);
     }
 
     onChangeText(ev) {
@@ -28,7 +31,30 @@ class Address extends Component {
     }
 
     onClickConfirmButton(ev) {
-        console.log(this.props.confirmAddress);
+        if (this.props.confirmAddress.type === 'sbox') {
+            this.props.setConfirmAddress({
+                type: 'normal',
+                address: '서울시 우리집'
+            });
+        } else {
+            this.props.setConfirmAddress({
+                type: 'sbox',
+                title: 'GS25 우리지점',
+                address: '서울시 스마일박스'
+            });
+        }
+    }
+
+    onClickAddress(ev) {
+        console.log(ev.target);
+    }
+
+    onClickAddressPin(ev) {
+        console.log(ev.target);
+    }
+
+    onFocusSearchInput(ev) {
+        this.props.setFocus(true);
     }
 
     render() {
@@ -45,7 +71,8 @@ class Address extends Component {
                             autoComplete="off"
                             value={this.state.keyword}
                             onChange={this.onChangeText}
-                            onKeyPress={this.onKeyPress} />
+                            onKeyPress={this.onKeyPress}
+                            onFocus={this.onFocusSearchInput} />
                         <button type="button" className="sp_addr btn_dell" onClick={() => { this.setState({ keyword: '' }); }}>삭제</button>
                     </div>
                     <RecentList recent={this.props.recent} sboxType={this.props.sboxType} />
@@ -56,18 +83,18 @@ class Address extends Component {
                 </div>
                 {this.props.sboxType !== 'hide' ? (<SmileBoxRecommend recent={this.props.recent} />) : null}
                 {this.props.viewType === 'confirm' ? (<ConfirmLayer
-                    onClickConfirmButton={this.props.onClickConfirmButton}
+                    onClickConfirmButton={this.onClickConfirmButton}
                     addressInfo={this.props.confirmAddress}
                     sboxType={this.props.sboxType} />) : null}
                 {this.props.viewType === 'nodata' ? (<NoData />) : null}
+                {(this.props.viewType === 'result' || this.props.viewType === 'sboxresult') &&
+                    (<SearchResultList
+                        onClickAddressPin={this.onClickAddressPin}
+                        onClickAddress={this.onClickAddress}
+                        searchResult={this.props.searchResult}
+                        selectedAddressId={this.props.selectedAddressId} />)}
             </div>
         );
     }
 }
-
-Address.defaultProps = {
-    sboxType: 'enable',
-    viewType: 'initial',
-    recent: '강남구'
-};
 export default Address;

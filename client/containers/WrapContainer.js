@@ -1,5 +1,4 @@
-import Main from '../components/Main';
-import * as actions from '../actions';
+import Wrap from '../components/Wrap';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
@@ -7,12 +6,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-
 });
 
 const Container = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Main);
+)(Wrap);
 
 export default Container;

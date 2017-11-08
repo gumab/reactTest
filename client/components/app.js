@@ -1,13 +1,12 @@
 import React from 'react';
 import Address from './Address';
 import Map from './Map';
+import WrapContainer from '../containers/WrapContainer';
 import classNames from 'classnames';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reducers from '../reducers';
 import ReduxThunk from 'redux-thunk';
-import Container from '../containers';
-
 
 const store = createStore(
     reducers,
@@ -24,7 +23,7 @@ class App extends React.Component {
         return (
             <Provider store={store}>
                 <div id="container">
-                    <Container />
+                    <WrapContainer />
                 </div>
             </Provider>
         );
