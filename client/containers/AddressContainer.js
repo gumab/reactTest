@@ -7,8 +7,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    setConfirmAddress: (address) => dispatch(actions.setConfirmAddress(address)),
-    setSelectedAddressId: (id) => dispatch(actions.setSelectedAddressId(id)),
+    setSelectedAddress: (address) => dispatch(actions.setSelectedAddress(address)),
     setViewType: (viewType) => dispatch(actions.setViewType(viewType)),
     setFocus: (isFocus) => dispatch(actions.setFocus(isFocus)),
     setSearchResult: (keyword, resultData) => dispatch(actions.setSearchResult(keyword, resultData))

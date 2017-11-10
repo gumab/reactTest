@@ -1,16 +1,9 @@
 import * as types from './ActionTypes';
 
-export const setConfirmAddress = (address) => {
+export const setSelectedAddress = (address) => {
     return {
-        type: types.SET_CONFIRM_ADDRESS,
+        type: types.SET_SELECTED_ADDRESS,
         address: address
-    };
-};
-
-export const setSelectedAddressId = (id) => {
-    return {
-        type: types.SET_SELECTED_ADDRESS_ID,
-        id: id
     };
 };
 
@@ -50,10 +43,38 @@ export const setSboxList = (sboxList) => {
     };
 };
 
-export const setMapArea = (center, bounds) => {
+export const setShowingSboxList = (sboxList) => {
+    return {
+        type: types.SET_SHOWING_SBOX_LIST,
+        sboxList: sboxList
+    };
+};
+
+export const setMapArea = (center, level) => {
     return {
         type: types.SET_MAP_AREA,
         center: center,
-        bounds: bounds
+        level: level
+    };
+};
+
+export const setGpsLocation = (location) => {
+    return {
+        type: types.SET_GPS_LOCATION,
+        location: location
+    };
+};
+
+export const setGpsStatus = (status) => {
+    return {
+        type: types.SET_GPS_STATUS,
+        status: status
+    };
+};
+
+export const setVirtualMapHeight = (height) => {
+    return {
+        type: types.SET_VIRTUAL_MAP_HEIGHT,
+        height: height
     };
 };

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class SmileBoxRecommend extends Component {
     render() {
         return (
-            <div className="smilebox_wrap">
+            <div style={{ display: this.props.show ? '' : 'none' }} className="smilebox_wrap">
                 <h2 className="tit_smilebox">24시간 무인택배함 스마일박스 <span className="bg_line"></span></h2>
                 <p className="tx_smilebox">원하는 지역의 스마일박스를 검색해 보세요.</p>
                 <ul className="lst_smilebox">

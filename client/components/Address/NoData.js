@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class NoData extends Component {
     render() {
         return (
-            <div className="ly_search_wrap ly_search_nodata">
+            <div style={{ display: this.props.show ? '' : 'none' }} className="ly_search_wrap ly_search_nodata">
                 <span className="sp_addr ico_nodata"></span>
                 <p className="tx_nodata"><span className="tx_nodata_keyword">{this.props.searchedKeyword}</span>에 대한 검색결과가 없습니다.</p>
                 <div className="addr_search_dsc">

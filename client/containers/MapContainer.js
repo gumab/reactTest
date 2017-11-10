@@ -7,12 +7,23 @@ const mapStateToProps = (state) => ({
     sboxType: state.sboxType,
     partnerKey: state.partnerKey,
     mapCenter: state.mapCenter,
-    mapBounds: state.mapBounds
+    mapBounds: state.mapBounds,
+    viewType: state.viewType,
+    selectedAddress: state.selectedAddress,
+    gpsLocation: state.gpsLocation,
+    gpsStatus: state.gpsStatus,
+    virtualMapHeight: state.virtualMapHeight,
+    showingSboxList: state.showingSboxList
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    setMapArea: (center, level) => dispatch(actions.setMapArea(center, level)),
+    setGpsLocation: (location) => dispatch(actions.setGpsLocation(location)),
+    setGpsStatus: (status) => dispatch(actions.setGpsStatus(status)),
+    setVirtualMapHeight: (height) => dispatch(actions.setVirtualMapHeight(height)),
+    setFocus: (isFocus) => dispatch(actions.setFocus(isFocus)),
     setSboxList: (sboxList) => dispatch(actions.setSboxList(sboxList)),
-    setMapArea: (center, bounds) => dispatch(actions.setMapArea(center, bounds))
+    setShowingSboxList: (sboxList) => dispatch(actions.setShowingSboxList(sboxList))
 });
 
 const MapContainer = connect(

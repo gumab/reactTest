@@ -4,8 +4,8 @@ import classNames from 'classnames';
 class SearchResultList extends Component {
     render() {
         return (
-            <div className="ly_search_wrap ly_search_list">
-                <p className="tx_search search_result_cnt">주소 검색결과 <em>15</em>건</p>
+            <div style={{ display: this.props.show ? '' : 'none' }} className="ly_search_wrap ly_search_list">
+                <p className="tx_search search_result_cnt">주소 검색결과 <em>{this.props.paging && this.props.paging.totalCount}</em>건</p>
                 <div className="sc_area">
                     <ul className="lst_search">
                         {
@@ -13,7 +13,7 @@ class SearchResultList extends Component {
                                 return (
                                     <li key={x.id} className={classNames({
                                         'list_item': true,
-                                        'selected': x.id === this.props.selectedAddressId
+                                        'selected': x.id === this.props.selectedAddress.level1.id || x.id === this.props.selectedAddress.level2.id
                                     })}>
                                         <a onClick={() => { this.props.onClickAddress(x, true); }} href="javascript:" className="sp_addr btn_pin">주소</a>
                                         <a onClick={() => { this.props.onClickAddress(x); }} href="javascript:" className="btn_addr">

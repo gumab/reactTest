@@ -5,6 +5,7 @@ import RecentList from './RecentList';
 import ConfirmLayer from './ConfirmLayer';
 import SearchResultList from './SearchResultList';
 import axios from 'axios';
+import getShortLotNumberAddress from '../../helper/getShortLotNumberAddress';
 
 class Address extends Component {
 
@@ -20,7 +21,21 @@ class Address extends Component {
         this.onClickAddress = this.onClickAddress.bind(this);
         this.onClickListButton = this.onClickListButton.bind(this);
         this.onClickRecentItem = this.onClickRecentItem.bind(this);
+        this.onClickRootDiv = this.onClickRootDiv.bind(this);
     }
+
+    onClickRootDiv(ev) {
+        console.log(ev.target);
+
+        let isSearchInput = ev.target === this.searchInput;
+        let isLink = ['A', 'BUTTON'].indexOf(ev.target.nodeName) >= 0;
+        if (!isSearchInput && !isLink) {
+            this.searchInput.blur();
+            this.props.setFocus(false);
+        }
+
+    }
+
 
     search(keyword, page) {
         axios.get('/api/address/search', {
@@ -29,14 +44,19 @@ class Address extends Component {
                 page: page
             }
         }).then((res) => {
-            this.props.setSearchResult(keyword, res.data);
             if (res.data && res.data.list && res.data.list.length > 0) {
+                res.data.list.forEach((x) => {
+                    x.shortLotAddress = getShortLotNumberAddress(x.lotAddress, x.address);
+                });
+                window.mapSet('half');
                 this.props.setViewType('result');
             } else {
                 this.props.setViewType('nodata');
             }
+            this.props.setSearchResult(keyword, res.data || []);
 
-        }).catch(() => {
+        }).catch((e) => {
+            console.log(e);
             this.props.setSearchResult(keyword);
             this.props.setViewType('nodata');
         });
@@ -60,8 +80,16 @@ class Address extends Component {
 
     onClickAddress(addressInfo, isPin) {
         if (!isPin) {
-            this.props.setConfirmAddress(addressInfo);
+            this.props.setSelectedAddress({
+                level1: {},
+                level2: addressInfo
+            });
             this.props.setViewType('confirm');
+        } else {
+            this.props.setSelectedAddress({
+                level1: addressInfo,
+                level2: {}
+            });
         }
     }
 
@@ -72,6 +100,10 @@ class Address extends Component {
     onClickListButton() {
         if (this.props.paging) {
             this.props.setViewType('result');
+            this.props.setSelectedAddress({
+                level1: this.props.selectedAddress.level2,
+                level2: {}
+            });
         }
     }
 
@@ -81,13 +113,15 @@ class Address extends Component {
 
     render() {
         return (
-            <div className="addr_area">
+            <div onClick={this.onClickRootDiv} className="addr_area">
                 {this.props.viewType === 'initial' && (<h1 className="tit_addr">주소찾기</h1>)}
                 <div className="addr_search">
                     <div className="inner">
                         <a href="javascript:" className="btn_back"><span className="sp_addr">뒤로가기</span></a>
                         <span className="sp_addr ico_search"></span>
-                        <input type="text"
+                        <input
+                            ref={ref => this.searchInput = ref}
+                            type="text"
                             placeholder="주소를 입력해 주세요"
                             className="input_search"
                             autoComplete="off"
@@ -106,18 +140,24 @@ class Address extends Component {
                     <p className="tx">도로명, 건물명 또는 지번 중 편한 방법으로  검색하세요.</p>
                     <p className="tx tx_v2">예) 건물명 : 방배동 우성아파트<br />도로명 : 테헤란로 152<br />지역번 : 역삼동 737</p>
                 </div>)}
-                {this.props.sboxType !== 'hide' && this.props.viewType === 'initial' && (<SmileBoxRecommend recent={this.props.recent} />)}
-                {this.props.viewType === 'confirm' && (<ConfirmLayer
+                <SmileBoxRecommend
+                    show={this.props.sboxType !== 'hide' && this.props.viewType === 'initial'}
+                    recent={this.props.recent} />
+                <ConfirmLayer
+                    show={this.props.viewType === 'confirm'}
                     onClickConfirmButton={this.onClickConfirmButton}
                     onClickListButton={this.onClickListButton}
-                    addressInfo={this.props.confirmAddress}
-                    sboxType={this.props.sboxType} />)}
-                {this.props.viewType === 'nodata' && (<NoData searchedKeyword={this.props.searchedKeyword} />)}
-                {(this.props.viewType === 'result' || this.props.viewType === 'sboxresult') &&
-                    (<SearchResultList
-                        onClickAddress={this.onClickAddress}
-                        searchResult={this.props.searchResult}
-                        selectedAddressId={this.props.selectedAddressId} />)}
+                    addressInfo={this.props.selectedAddress.level2}
+                    sboxType={this.props.sboxType} />
+                <NoData
+                    show={this.props.viewType === 'nodata'}
+                    searchedKeyword={this.props.searchedKeyword} />
+                <SearchResultList
+                    show={this.props.viewType === 'result' || this.props.viewType === 'sboxresult'}
+                    selectedAddress={this.props.selectedAddress}
+                    onClickAddress={this.onClickAddress}
+                    paging={this.props.paging}
+                    searchResult={this.props.searchResult} />
             </div>
         );
     }
