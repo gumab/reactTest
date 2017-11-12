@@ -15,6 +15,7 @@ class MapComponent extends Component {
         this.getVirtualCoords = this.getVirtualCoords.bind(this);
         this.onClickRootDiv = this.onClickRootDiv.bind(this);
         this.setMarker = this.setMarker.bind(this);
+        this.onClickMarker = this.onClickMarker.bind(this);
     }
 
     componentDidMount() {
@@ -69,7 +70,6 @@ class MapComponent extends Component {
                     this.setVirtualMapCenter.bind(this)(nextAddress.level2);
                 }
             }
-            console.log(nextAddress);
         }
 
         if (this.props.gpsLocation !== nextProps.gpsLocation) {
@@ -90,7 +90,6 @@ class MapComponent extends Component {
         }
 
         if (this.props.sboxList !== nextProps.sboxList) {
-            console.log(nextProps.sboxList);
             nextProps.sboxList.forEach((x) => {
                 this.setMarker(x, 0);
             });
@@ -101,7 +100,13 @@ class MapComponent extends Component {
                 if (nextProps.showingSboxList.indexOf(x.id) < 0) {
                     this.setMarker(x, -1);
                 } else {
-                    this.setMarker(x, 0);
+                    if (this.props.selectedAddress.level2.id === x.id) {
+                        this.setMarker(x, 2);
+                    } else if (this.props.selectedAddress.level1.id === x.id) {
+                        this.setMarker(x, 1);
+                    } else {
+                        this.setMarker(x, 0);
+                    }
                 }
             });
         }
@@ -141,8 +146,12 @@ class MapComponent extends Component {
     }
 
     setMarker(location, markerLevel) {
-        if (location.marker) {
-            location.marker.setMap(null);
+        if (!this.globalMarkers) {
+            this.globalMarkers = {};
+        }
+        if (this.globalMarkers[location.id]) {
+            this.globalMarkers[location.id].setMap(null);
+            this.globalMarkers[location.id] = undefined;
         }
         if (markerLevel < 0) {
             return;
@@ -167,13 +176,35 @@ class MapComponent extends Component {
         }
 
         const daumAPI = daumMapHelper.getDaumMapAPI();
-        location.marker = new daumAPI.Marker({
+        this.globalMarkers[location.id] = new daumAPI.Marker({
             image: daumMapHelper.getMarkerImage(imgType)
         });
+        daumAPI.event.addListener(this.globalMarkers[location.id], 'click', () => {
+            this.onClickMarker(location);
+        });
         let position = daumMapHelper.toDaumCoords(location);
-        location.marker.setPosition(position);
-        location.marker.setMap(this.daumMap);
-        return location;
+        this.globalMarkers[location.id].setPosition(position);
+        this.globalMarkers[location.id].setMap(this.daumMap);
+    }
+
+    onClickMarker(location) {
+        if (this.props.selectedAddress.level1.type == location.type ||
+            this.props.selectedAddress.level2.type == location.type) {
+            this.props.setSelectedAddress({
+                level1: {},
+                level2: location
+            });
+        } else if (this.props.searchResult.filter(x => x.id === this.props.selectedAddress.level2.id).length > 0) {
+            this.props.setSelectedAddress({
+                level1: this.props.selectedAddress.level2,
+                level2: location
+            });
+        } else {
+            this.props.setSelectedAddress({
+                level2: location
+            });
+        }
+        this.props.setViewType('confirm');
     }
 
     setGpsMarker(location) {
@@ -202,7 +233,7 @@ class MapComponent extends Component {
 
     onChangeMap() {
         this.props.setGpsStatus(consts.GPS_BTN_STATUS.NORMAL);
-        this.props.setMapArea(this.daumMap.getCenter(), this.daumMap.getLevel());
+        this.props.setMapArea(daumMapHelper.toCoords(this.daumMap.getCenter()), this.daumMap.getLevel());
 
         const bounds = this.daumMap.getBounds();
         const ne = bounds.getNorthEast();
@@ -213,22 +244,20 @@ class MapComponent extends Component {
         const minLng = sw.getLng();
 
         const smileboxLevel = this.getSmileboxLevel(this.daumMap.getLevel());
+        let showingList = [];
         this.props.sboxList.forEach((x) => {
             const lat = parseFloat(x.latitude);
             const lng = parseFloat(x.longitude);
             if (this.props.selectedAddress.level1.id === x.id || this.props.selectedAddress.level2.id === x.id) {
-                x.hide = false;
+                showingList = showingList.concat(x.id);
             } else if (smileboxLevel !== consts.SBOX_LEVEL.SHOW_NONE &&
                 (smileboxLevel === consts.SBOX_LEVEL.SHOW_ALL ||
                     (smileboxLevel === consts.SBOX_LEVEL.SHOW_DONG && x.dongrep) ||
                     (smileboxLevel === consts.SBOX_LEVEL.SHOW_GU && x.gurep)) &&
                 (minLat < lat && lat < maxLat && minLng < lng && lng < maxLng)) {
-                x.hide = false;
-            } else {
-                x.hide = true;
+                showingList = showingList.concat(x.id);
             }
         });
-        let showingList = this.props.sboxList.filter(x => !x.hide).map(x => x.id);
         this.props.setShowingSboxList(showingList);
     }
 

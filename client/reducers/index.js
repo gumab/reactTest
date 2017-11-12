@@ -4,6 +4,7 @@ import consts from '../consts';
 const defaultState = {
     value: '',
     viewType: 'initial',
+    resultType: '',
     sboxType: 'enable',
     recent: '강남구',
     focusIn: false,
@@ -39,6 +40,10 @@ const reducer = (state = defaultState, action) => {
         case types.SET_VIEW_TYPE:
             return Object.assign({}, state, {
                 viewType: action.viewType
+            });
+        case types.SET_RESULT_TYPE:
+            return Object.assign({}, state, {
+                resultType: action.resultType
             });
         case types.SET_FOCUS:
             return Object.assign({}, state, {

@@ -1,5 +1,6 @@
 export const SET_SELECTED_ADDRESS = 'SET_SELECTED_ADDRESS';
 export const SET_VIEW_TYPE = 'SET_VIEW_TYPE';
+export const SET_RESULT_TYPE = 'SET_RESULT_TYPE';
 export const SET_MARKER = 'SET_MARKER';
 export const SET_FOCUS = 'SET_FOCUS';
 export const SET_SEARCH_RESULT = 'SET_SEARCH_RESULT';

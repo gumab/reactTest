@@ -52,7 +52,7 @@ class Main extends React.Component {
                     classNames({
                         'ly_addr_wrap': true,
                         'ly_addr_list': this.props.viewType !== 'initial',
-                        'ly_smilebox_list': this.props.viewType === 'sboxresult',
+                        'ly_smilebox_list': this.props.resultType === 'sbox',
                         'focus_in': this.props.focusIn
                     })}>
                 <div className="ly_addr_area">

@@ -14,6 +14,13 @@ export const setViewType = (viewType) => {
     };
 };
 
+export const setResultType = (resultType) => {
+    return {
+        type: types.SET_RESULT_TYPE,
+        resultType: resultType
+    };
+};
+
 export const setMarker = (address) => {
     return {
         type: types.SET_MARKER,

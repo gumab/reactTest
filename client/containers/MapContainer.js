@@ -13,17 +13,20 @@ const mapStateToProps = (state) => ({
     gpsLocation: state.gpsLocation,
     gpsStatus: state.gpsStatus,
     virtualMapHeight: state.virtualMapHeight,
-    showingSboxList: state.showingSboxList
+    showingSboxList: state.showingSboxList,
+    searchResult: state.searchResult
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    setViewType: (viewType) => dispatch(actions.setViewType(viewType)),
     setMapArea: (center, level) => dispatch(actions.setMapArea(center, level)),
     setGpsLocation: (location) => dispatch(actions.setGpsLocation(location)),
     setGpsStatus: (status) => dispatch(actions.setGpsStatus(status)),
     setVirtualMapHeight: (height) => dispatch(actions.setVirtualMapHeight(height)),
     setFocus: (isFocus) => dispatch(actions.setFocus(isFocus)),
     setSboxList: (sboxList) => dispatch(actions.setSboxList(sboxList)),
-    setShowingSboxList: (sboxList) => dispatch(actions.setShowingSboxList(sboxList))
+    setShowingSboxList: (sboxList) => dispatch(actions.setShowingSboxList(sboxList)),
+    setSelectedAddress: (address) => dispatch(actions.setSelectedAddress(address))
 });
 
 const MapContainer = connect(

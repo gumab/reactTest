@@ -10,7 +10,8 @@ const mapDispatchToProps = (dispatch) => ({
     setSelectedAddress: (address) => dispatch(actions.setSelectedAddress(address)),
     setViewType: (viewType) => dispatch(actions.setViewType(viewType)),
     setFocus: (isFocus) => dispatch(actions.setFocus(isFocus)),
-    setSearchResult: (keyword, resultData) => dispatch(actions.setSearchResult(keyword, resultData))
+    setSearchResult: (keyword, resultData) => dispatch(actions.setSearchResult(keyword, resultData)),
+    setResultType: (keyword, resultData) => dispatch(actions.setResultType(keyword, resultData))
 });
 
 const AddressContainer = connect(

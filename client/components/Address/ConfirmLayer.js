@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import consts from '../../consts';
 
 class ConfirmLayer extends Component {
     render() {
@@ -10,9 +11,9 @@ class ConfirmLayer extends Component {
                 <a href="javascript:" className="btn_lst" onClick={this.props.onClickListButton}>목록</a>
                 <div className={classNames({
                     'result_area': true,
-                    'result_area_v2': this.props.addressInfo.type === 'sbox'
+                    'result_area_v2': this.props.addressInfo.type === consts.PLACE_TYPE.SBOX
                 })}>
-                    {this.props.addressInfo.type === 'sbox' &&
+                    {this.props.addressInfo.type === consts.PLACE_TYPE.SBOX &&
                         (<p className="tx_name">{this.props.addressInfo.title}
                             <button type="button" className="btn_info">이용안내 <span className="sp_addr ico">?</span>
                             </button>
@@ -20,7 +21,7 @@ class ConfirmLayer extends Component {
                     }
                     <p className="tx_addr">{this.props.addressInfo.address}</p>
                     {
-                        this.props.addressInfo.type === 'sbox' ?
+                        this.props.addressInfo.type === consts.PLACE_TYPE.SBOX ?
                             (<p className="tx_num">
                                 {this.props.addressInfo.guideText}
                             </p>) :
@@ -33,10 +34,10 @@ class ConfirmLayer extends Component {
                     <a href="javascript:" onClick={this.props.onClickConfirmButton} className={
                         classNames({
                             'btn_set': true,
-                            'btn_delivery': this.props.addressInfo.type === 'sbox',
-                            'disabled': this.props.addressInfo.type === 'sbox' && this.props.sboxType !== 'enable'
+                            'btn_delivery': this.props.addressInfo.type === consts.PLACE_TYPE.SBOX,
+                            'disabled': this.props.addressInfo.type === consts.PLACE_TYPE.SBOX && this.props.sboxType !== 'enable'
                         })}>{(<span className="sp_addr ico"></span>)}{
-                            this.props.addressInfo.type !== 'sbox' ?
+                            this.props.addressInfo.type !== consts.PLACE_TYPE.SBOX ?
                                 '이 위치로 배송지 설정' : (this.props.sboxType === 'enable' ? '스마일박스로 받기' : '스마일박스로 배송 받을 수 없습니다')
                         }</a>
                 </div>

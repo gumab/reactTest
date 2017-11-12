@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
+import Item from './SearchResultListItem';
 
 class SearchResultList extends Component {
     render() {
@@ -11,19 +11,11 @@ class SearchResultList extends Component {
                         {
                             this.props.searchResult.map((x) => {
                                 return (
-                                    <li key={x.id} className={classNames({
-                                        'list_item': true,
-                                        'selected': x.id === this.props.selectedAddress.level1.id || x.id === this.props.selectedAddress.level2.id
-                                    })}>
-                                        <a onClick={() => { this.props.onClickAddress(x, true); }} href="javascript:" className="sp_addr btn_pin">주소</a>
-                                        <a onClick={() => { this.props.onClickAddress(x); }} href="javascript:" className="btn_addr">
-                                            {x.type === 'sbox' && (<p className="tx_name">{x.title}</p>)}
-                                            <p className="tx_addr">{x.address}</p>
-                                            <p className="tx_num">
-                                                <span className="bx_num">지번</span>{x.shortLotAddress}<span className="bar">l</span>{x.zipcode}
-                                            </p>
-                                        </a>
-                                    </li>);
+                                    <Item
+                                        key={x.id}
+                                        info={x}
+                                        selectedAddress={this.props.selectedAddress}
+                                        onClickAddress={this.props.onClickAddress} />);
                             })
                         }
                     </ul>

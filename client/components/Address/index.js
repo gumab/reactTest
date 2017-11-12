@@ -6,6 +6,7 @@ import ConfirmLayer from './ConfirmLayer';
 import SearchResultList from './SearchResultList';
 import axios from 'axios';
 import getShortLotNumberAddress from '../../helper/getShortLotNumberAddress';
+import consts from '../../consts';
 
 class Address extends Component {
 
@@ -30,36 +31,80 @@ class Address extends Component {
         let isSearchInput = ev.target === this.searchInput;
         let isLink = ['A', 'BUTTON'].indexOf(ev.target.nodeName) >= 0;
         if (!isSearchInput && !isLink) {
-            this.searchInput.blur();
             this.props.setFocus(false);
         }
-
     }
 
 
     search(keyword, page) {
-        axios.get('/api/address/search', {
-            params: {
-                key: keyword,
-                page: page
+        if (this.isSearching) {
+            return;
+        }
+
+        this.props.setSelectedAddress({
+            level1: {},
+            level2: {}
+        });
+
+        let isSbox = new RegExp(consts.SBOX_KEYWORD_REGEX).test(keyword);
+
+        if (isSbox) {
+            let key = keyword.replace(consts.SBOX_KEYWORD_REGEX, '').replace(/ /g, '');
+            let gu = (key.match(/([가-힣]*[^구])구?$/) || [])[1];
+            let dong = (key.match(/([가-힣]+동)$/) || [])[1];
+            if (gu) {
+                gu += '구';
             }
-        }).then((res) => {
-            if (res.data && res.data.list && res.data.list.length > 0) {
-                res.data.list.forEach((x) => {
-                    x.shortLotAddress = getShortLotNumberAddress(x.lotAddress, x.address);
-                });
+            let data = [];
+            if (key) {
+                data = this.props.sboxList.filter(x => (x.gu && x.gu === gu) || (x.dong && x.dong === dong));
+            } else {
+                data = this.props.sboxList;
+            }
+
+            if (data.length > 0) {
+                let page = {
+                    hasNext: false,
+                    totalCount: data.length
+                };
+
                 window.mapSet('half');
                 this.props.setViewType('result');
+                this.props.setResultType('sbox');
+
+                this.props.setSearchResult(keyword, {
+                    list: data,
+                    page: page
+                });
             } else {
+                this.props.setSearchResult(keyword);
                 this.props.setViewType('nodata');
             }
-            this.props.setSearchResult(keyword, res.data || []);
 
-        }).catch((e) => {
-            console.log(e);
-            this.props.setSearchResult(keyword);
-            this.props.setViewType('nodata');
-        });
+        } else {
+            axios.get('/api/address/search', {
+                params: {
+                    key: keyword,
+                    page: page
+                }
+            }).then((res) => {
+                if (res.data && res.data.list && res.data.list.length > 0) {
+                    res.data.list.forEach((x) => {
+                        x.shortLotAddress = getShortLotNumberAddress(x.lotAddress, x.address);
+                    });
+                    window.mapSet('half');
+                    this.props.setViewType('result');
+                    this.props.setResultType('');
+                } else {
+                    this.props.setViewType('nodata');
+                }
+                this.props.setSearchResult(keyword, res.data || []);
+            }).catch((e) => {
+                console.log(e);
+                this.props.setSearchResult(keyword);
+                this.props.setViewType('nodata');
+            });
+        }
         this.props.setFocus(false);
     }
 
@@ -98,12 +143,18 @@ class Address extends Component {
     }
 
     onClickListButton() {
-        if (this.props.paging) {
+        if (this.props.searchResult && this.props.searchResult.length > 0) {
             this.props.setViewType('result');
-            this.props.setSelectedAddress({
-                level1: this.props.selectedAddress.level2,
-                level2: {}
-            });
+            if (this.props.searchResult.filter(x => x.id === this.props.selectedAddress.level2.id).length > 0) {
+                this.props.setSelectedAddress({
+                    level1: this.props.selectedAddress.level2,
+                    level2: {}
+                });
+            } else {
+                this.props.setSelectedAddress({
+                    level2: {}
+                });
+            }
         }
     }
 
@@ -153,7 +204,7 @@ class Address extends Component {
                     show={this.props.viewType === 'nodata'}
                     searchedKeyword={this.props.searchedKeyword} />
                 <SearchResultList
-                    show={this.props.viewType === 'result' || this.props.viewType === 'sboxresult'}
+                    show={this.props.viewType === 'result'}
                     selectedAddress={this.props.selectedAddress}
                     onClickAddress={this.onClickAddress}
                     paging={this.props.paging}
