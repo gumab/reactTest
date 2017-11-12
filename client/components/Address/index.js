@@ -59,8 +59,10 @@ class Address extends Component {
 
     onClickRootDiv(ev) {
         let isSearchInput = ev.target === this.searchInput;
+        let isInAddressSearchView = this.addressSearch.contains(ev.target);
+        let isBackButton = ev.target === this.backButton;
         let isLink = ['A', 'BUTTON'].indexOf(ev.target.nodeName) >= 0;
-        if (!isSearchInput && !isLink) {
+        if (!isSearchInput && !(isInAddressSearchView && isLink && !isBackButton)) {
             this.props.setFocus(false);
         }
     }
@@ -223,6 +225,7 @@ class Address extends Component {
                     level2: {}
                 });
             }
+            window.mapSet('half');
         }
     }
 
@@ -242,9 +245,9 @@ class Address extends Component {
         return (
             <div onClick={this.onClickRootDiv} className="addr_area">
                 {this.props.viewType === 'initial' && (<h1 className="tit_addr">주소찾기</h1>)}
-                <div className="addr_search">
+                <div ref={ref => this.addressSearch = ref} className="addr_search">
                     <div className="inner">
-                        <a href="javascript:" className="btn_back"><span className="sp_addr">뒤로가기</span></a>
+                        <a ref={ref => this.backButton = ref} href="javascript:" className="btn_back"><span className="sp_addr">뒤로가기</span></a>
                         <span className="sp_addr ico_search"></span>
                         <input
                             ref={ref => this.searchInput = ref}

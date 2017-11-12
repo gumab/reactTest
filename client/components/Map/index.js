@@ -41,49 +41,54 @@ class MapComponent extends Component {
         this.props.setVirtualMapHeight(this.mapDiv.offsetHeight);
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.mapCenter !== nextProps.mapCenter ||
-            this.props.mapLevel !== nextProps.mapLevel ||
-            this.props.virtualMapHeight !== nextProps.virtualMapHeight
+    componentDidUpdate(prevProps) {
+        if (prevProps.mapCenter !== this.props.mapCenter ||
+            prevProps.mapLevel !== this.props.mapLevel ||
+            prevProps.virtualMapHeight !== this.props.virtualMapHeight
         ) {
-            this.daumMap.setLevel(nextProps.mapLevel);
-            this.daumMap.setCenter(daumMapHelper.toDaumCoords(nextProps.mapCenter));
+            this.daumMap.setLevel(this.props.mapLevel);
+            this.daumMap.setCenter(daumMapHelper.toDaumCoords(this.props.mapCenter));
         }
 
-        if (nextProps.selectedAddress !== this.props.selectedAddress) {
+        if (prevProps.selectedAddress !== this.props.selectedAddress) {
+            let prevAddress = prevProps.selectedAddress;
             let thisAddress = this.props.selectedAddress;
-            let nextAddress = nextProps.selectedAddress;
 
-            if (thisAddress.level1 !== nextAddress.level1) {
-                this.setMarker(thisAddress.level1, 0);
+            if (prevAddress.level1 !== thisAddress.level1) {
+                this.setMarker(prevAddress.level1, 0);
             }
-            if (thisAddress.level2 !== nextAddress.level2) {
-                this.setMarker(thisAddress.level2, 0);
+            if (prevAddress.level2 !== thisAddress.level2) {
+                this.setMarker(prevAddress.level2, 0);
             }
 
-            if (thisAddress.level1 !== nextAddress.level1) {
-                if (nextAddress.level1 && nextAddress.level1.id) {
-                    this.setMarker(nextAddress.level1, 1);
-                    this.setVirtualMapCenter(nextAddress.level1);
+            if (prevAddress.level1 !== thisAddress.level1) {
+                if (thisAddress.level1 && thisAddress.level1.id) {
+                    this.setMarker(thisAddress.level1, 1);
+                    this.setVirtualMapCenter(thisAddress.level1);
                 }
             }
 
-            if (thisAddress.level2 !== nextAddress.level2) {
-                if (nextAddress.level2 && nextAddress.level2.id) {
-                    this.setMarker(nextAddress.level2, 2);
-                    this.setVirtualMapCenter(nextAddress.level2);
+            if (prevAddress.level2 !== thisAddress.level2) {
+                if (thisAddress.level2 && thisAddress.level2.id) {
+                    window.mapSet('min');
+                    this.setMarker(thisAddress.level2, 2);
+                    setTimeout(() => {
+                        this.setVirtualMapCenter(thisAddress.level2);
+                    }, 0);
+                } else {
+                    window.mapSet('half');
                 }
             }
         }
 
-        if (this.props.gpsLocation !== nextProps.gpsLocation) {
-            this.setGpsMarker(nextProps.gpsLocation);
-            this.setVirtualMapCenter(nextProps.gpsLocation);
-        } else if (this.props.gpsStatus !== nextProps.gpsStatus
-            && nextProps.gpsStatus == consts.GPS_BTN_STATUS.ENABLE
+        if (prevProps.gpsLocation !== this.props.gpsLocation) {
+            this.setGpsMarker(this.props.gpsLocation);
+            this.setVirtualMapCenter(this.props.gpsLocation);
+        } else if (prevProps.gpsStatus !== this.props.gpsStatus
+            && this.props.gpsStatus == consts.GPS_BTN_STATUS.ENABLE
             && this.props.gpsLocation
         ) {
-            let coords = daumMapHelper.toCoords(this.props.gpsLocation);
+            let coords = daumMapHelper.toCoords(prevProps.gpsLocation);
             if (!(coords.lat && coords.lng)) {
                 return;
             }
@@ -91,15 +96,15 @@ class MapComponent extends Component {
             this.setVirtualMapCenter(this.props.gpsLocation);
         }
 
-        if (this.props.sboxList !== nextProps.sboxList) {
-            nextProps.sboxList.forEach((x) => {
+        if (prevProps.sboxList !== this.props.sboxList) {
+            this.props.sboxList.forEach((x) => {
                 this.setMarker(x, 0);
             });
         }
 
-        if (this.props.showingSboxList !== nextProps.showingSboxList) {
+        if (prevProps.showingSboxList !== this.props.showingSboxList) {
             this.props.sboxList.forEach((x) => {
-                if (nextProps.showingSboxList.indexOf(x.id) < 0) {
+                if (this.props.showingSboxList.indexOf(x.id) < 0) {
                     this.setMarker(x, -1);
                 } else {
                     if (this.props.selectedAddress.level2.id === x.id) {
@@ -202,8 +207,8 @@ class MapComponent extends Component {
     }
 
     onClickMarker(location) {
-        if (this.props.selectedAddress.level1.type == location.type ||
-            this.props.selectedAddress.level2.type == location.type) {
+        if (this.props.selectedAddress.level1.type === location.type ||
+            this.props.selectedAddress.level2.type === location.type) {
             this.props.setSelectedAddress({
                 level1: {},
                 level2: location
