@@ -43,6 +43,13 @@ export const setSearchResult = (keyword, resultData) => {
     };
 };
 
+export const addSearchResult = (resultData) => {
+    return {
+        type: types.ADD_SEARCH_RESULT,
+        resultData: resultData
+    };
+};
+
 export const setSboxList = (sboxList) => {
     return {
         type: types.SET_SBOX_LIST,
@@ -83,5 +90,12 @@ export const setVirtualMapHeight = (height) => {
     return {
         type: types.SET_VIRTUAL_MAP_HEIGHT,
         height: height
+    };
+};
+
+export const setAccuracyToast = (show) => {
+    return {
+        type: types.SET_ACCURACY_TOAST,
+        show: show
     };
 };

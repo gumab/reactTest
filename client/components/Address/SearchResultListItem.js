@@ -20,7 +20,7 @@ class SearchResultList extends Component {
 
     render() {
         return (
-            <li key={this.props.info.id} className={classNames({
+            <li id={this.props.info.id} className={classNames({
                 'list_item': true,
                 'selected': this.props.info.id === this.props.selectedAddress.level1.id || this.props.info.id === this.props.selectedAddress.level2.id
             })}>

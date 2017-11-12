@@ -11,6 +11,7 @@ const mapDispatchToProps = (dispatch) => ({
     setViewType: (viewType) => dispatch(actions.setViewType(viewType)),
     setFocus: (isFocus) => dispatch(actions.setFocus(isFocus)),
     setSearchResult: (keyword, resultData) => dispatch(actions.setSearchResult(keyword, resultData)),
+    addSearchResult: (resultData) => dispatch(actions.addSearchResult(resultData)),
     setResultType: (keyword, resultData) => dispatch(actions.setResultType(keyword, resultData))
 });
 

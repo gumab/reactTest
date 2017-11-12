@@ -55,6 +55,9 @@ const consts = {
         NORMAL: 'normal',
         FINDING: 'finding',
         ENABLE: 'enable'
+    },
+    COOKIE_KEYS: {
+        SEARCH_HISTORY: 'address_search_history'
     }
 };
 

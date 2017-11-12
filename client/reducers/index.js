@@ -25,7 +25,8 @@ const defaultState = {
     selectedAddress: {
         level1: {},
         level2: {}
-    }
+    },
+    showAccuracyToast: false
 };
 
 const reducer = (state = defaultState, action) => {
@@ -55,6 +56,11 @@ const reducer = (state = defaultState, action) => {
                 searchResult: action.resultData ? action.resultData.list : [],
                 paging: action.resultData ? action.resultData.page : undefined
             });
+        case types.ADD_SEARCH_RESULT:
+            return Object.assign({}, state, {
+                searchResult: action.resultData ? state.searchResult.concat(action.resultData.list) : state.searchResult,
+                paging: action.resultData ? action.resultData.page : state.paging
+            });
         case types.SET_SBOX_LIST:
             return Object.assign({}, state, {
                 sboxList: action.sboxList
@@ -79,6 +85,10 @@ const reducer = (state = defaultState, action) => {
         case types.SET_VIRTUAL_MAP_HEIGHT:
             return Object.assign({}, state, {
                 virtualMapHeight: action.height
+            });
+        case types.SET_ACCURACY_TOAST:
+            return Object.assign({}, state, {
+                showAccuracyToast: action.show
             });
         default:
             return state;

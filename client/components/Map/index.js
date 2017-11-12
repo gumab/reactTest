@@ -3,6 +3,7 @@ import Promotion from './Promotion';
 import * as daumMapHelper from '../../helper/daumMapHelper';
 import consts from '../../consts';
 import classNames from 'classnames';
+import { clearTimeout } from 'timers';
 
 class MapComponent extends Component {
     constructor() {
@@ -16,6 +17,9 @@ class MapComponent extends Component {
         this.onClickRootDiv = this.onClickRootDiv.bind(this);
         this.setMarker = this.setMarker.bind(this);
         this.onClickMarker = this.onClickMarker.bind(this);
+        this.setVirtualMapCenter = this.setVirtualMapCenter.bind(this);
+        this.setGpsMarker = this.setGpsMarker.bind(this);
+        this.showAccuracyToast = this.showAccuracyToast.bind(this);
     }
 
     componentDidMount() {
@@ -60,22 +64,21 @@ class MapComponent extends Component {
             if (thisAddress.level1 !== nextAddress.level1) {
                 if (nextAddress.level1 && nextAddress.level1.id) {
                     this.setMarker(nextAddress.level1, 1);
-                    this.setVirtualMapCenter.bind(this)(nextAddress.level1);
+                    this.setVirtualMapCenter(nextAddress.level1);
                 }
             }
 
             if (thisAddress.level2 !== nextAddress.level2) {
                 if (nextAddress.level2 && nextAddress.level2.id) {
                     this.setMarker(nextAddress.level2, 2);
-                    this.setVirtualMapCenter.bind(this)(nextAddress.level2);
+                    this.setVirtualMapCenter(nextAddress.level2);
                 }
             }
         }
 
         if (this.props.gpsLocation !== nextProps.gpsLocation) {
-            this.setGpsMarker.bind(this)(nextProps.gpsLocation);
-            this.setVirtualMapCenter.bind(this)(nextProps.gpsLocation);
-            this.accuracyToast.style.opacity = 1;
+            this.setGpsMarker(nextProps.gpsLocation);
+            this.setVirtualMapCenter(nextProps.gpsLocation);
         } else if (this.props.gpsStatus !== nextProps.gpsStatus
             && nextProps.gpsStatus == consts.GPS_BTN_STATUS.ENABLE
             && this.props.gpsLocation
@@ -84,9 +87,8 @@ class MapComponent extends Component {
             if (!(coords.lat && coords.lng)) {
                 return;
             }
-            this.setGpsMarker.bind(this)(this.props.gpsLocation);
-            this.setVirtualMapCenter.bind(this)(this.props.gpsLocation);
-            this.accuracyToast.style.opacity = 1;
+            this.setGpsMarker(this.props.gpsLocation);
+            this.setVirtualMapCenter(this.props.gpsLocation);
         }
 
         if (this.props.sboxList !== nextProps.sboxList) {
@@ -112,6 +114,15 @@ class MapComponent extends Component {
         }
     }
 
+    showAccuracyToast() {
+        this.props.setAccuracyToast(true);
+        if (window.toastTimeout) {
+            window.clearTimeout(window.toastTimeout);
+        }
+        window.toastTimeout = window.setTimeout(() => {
+            this.props.setAccuracyToast(false);
+        }, 3000);
+    }
 
     onClickRootDiv(ev) {
         this.props.setFocus(false);
@@ -146,6 +157,9 @@ class MapComponent extends Component {
     }
 
     setMarker(location, markerLevel) {
+        if (!location) {
+            return;
+        }
         if (!this.globalMarkers) {
             this.globalMarkers = {};
         }
@@ -305,6 +319,7 @@ class MapComponent extends Component {
                     console.log(position.coords);
                     this.props.setGpsLocation(position.coords);
                     this.props.setGpsStatus(consts.GPS_BTN_STATUS.ENABLE);
+                    this.showAccuracyToast();
                 }
             },
             () => {
@@ -342,7 +357,7 @@ class MapComponent extends Component {
                     {/*
                     <a href="#" className="sp_addr btn_map btn_position2">현재위치</a>
                     */}
-                    <p ref={ref => this.accuracyToast = ref} className="position_dsc" style={{ opacity: 0 }}>내 위치와 {this.getAccuracyText()}m 정도 차이 날 수 있습니다</p>
+                    <p ref={ref => this.accuracyToast = ref} className="position_dsc" style={{ opacity: this.props.showAccuracyToast ? 1 : 0 }}>내 위치와 {this.getAccuracyText()}m 정도 차이 날 수 있습니다</p>
                 </div>
                 {this.props.sboxType !== 'hide' ? (<Promotion />) : null}
             </div>

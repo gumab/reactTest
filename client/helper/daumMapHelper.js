@@ -1,3 +1,5 @@
+'use strict';
+
 import consts from '../consts';
 
 export const getDaumMapAPI = () => {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SboxItem from './RecentListSboxItem';
 
 class SmileBoxRecommend extends Component {
     render() {
@@ -7,16 +8,18 @@ class SmileBoxRecommend extends Component {
                 <h2 className="tit_smilebox">24시간 무인택배함 스마일박스 <span className="bg_line"></span></h2>
                 <p className="tx_smilebox">원하는 지역의 스마일박스를 검색해 보세요.</p>
                 <ul className="lst_smilebox">
-                    <li>
-                        <a href="javascript:">
-                            <span className="sp_addr ico_smilebox"></span>스마일박스<span className="sp_addr ico_arr"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:">
-                            <span className="sp_addr ico_smilebox"></span>{this.props.recent} 스마일박스<span className="sp_addr ico_arr"></span>
-                        </a>
-                    </li>
+
+                    {this.props.sboxList.map((x, idx) => {
+                        return (
+                            <SboxItem
+                                key={'recommend_sbox_' + idx}
+                                index={idx}
+                                keyword={x}
+                                length={this.props.sboxList.length}
+                                onClickRecentItem={this.props.onClickRecentItem}
+                            />
+                        );
+                    })}
                 </ul>
             </div>
         );
